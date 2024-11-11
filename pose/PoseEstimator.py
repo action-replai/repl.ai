@@ -23,7 +23,7 @@ class PoseEstimator(ABC):
         rescaled_points = np.multiply(keypoints, [y,x,1])
         shaped = np.squeeze(rescaled_points)
         
-        for edge, color in edges.items():
+        for edge in edges.items():
             p1, p2 = edge
             y1, x1, c1 = shaped[p1]
             y2, x2, c2 = shaped[p2]
