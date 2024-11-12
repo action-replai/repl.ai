@@ -20,7 +20,10 @@ class PoseEstimator(ABC):
 
     def get_keypoints(self, detections):
         # print(detections)
-        return detections['output_0'].numpy().squeeze()
+        stuff = detections['output_0'].numpy()[0,0,:,:]
+        detections['output_0'].numpy()
+        # print(stuff)
+        return stuff
 
     def draw_poses_for_frame(self, frame):
         input_img = tf.expand_dims(frame, axis=0)
@@ -28,7 +31,7 @@ class PoseEstimator(ABC):
         input_img = tf.cast(input_img, dtype=tf.int32)
 
         detections = self.model(input_img)
-        print(f"detections: {detections}")
+        # print(f"detections: {detections}")
         keypoints_with_scores = self.get_keypoints(detections)
 
         self.draw(frame, keypoints_with_scores, self.EDGES, 0.1)
@@ -40,7 +43,7 @@ class PoseEstimator(ABC):
         
         for edge in edges:
             p1, p2 = edge
-            print(keypoints[p1])
+            # print(keypoints[p1])
             y1, x1, c1 = keypoints[p1]
             y2, x2, c2 = keypoints[p2]
             
@@ -59,9 +62,10 @@ class PoseEstimator(ABC):
                 cv2.circle(frame, (int(kx), int(ky)), 6, (0,255,0), -1)
 
     def draw(self, frame, keypoints, edges, confidence_threshold):
-        for keypoint in keypoints:
-            self.draw_connections(frame, keypoint, edges, confidence_threshold)
-            self.draw_keypoints(frame, keypoint, confidence_threshold)
+        # for keypoint in keypoints:
+            # print(keypoint)
+        self.draw_connections(frame, keypoints, edges, confidence_threshold)
+        self.draw_keypoints(frame, keypoints, confidence_threshold)
 
     def rescale(self, frame):
         img = frame.copy()
