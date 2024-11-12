@@ -7,14 +7,12 @@ class ProdPoseEstimator(PoseEstimator):
         while cap.isOpened():
             ret, frame = cap.read()
 
-            input_img = self.rescale(frame)
-            
-            results = self.movenet(input_img)
-            keypoints_with_scores = results['output_0'].numpy()[:,:,:51].reshape((6,17,3))
-            
-            self.apply_pose_to_people(frame, keypoints_with_scores, self.EDGES, 0.1)
+            self.draw_poses_for_frame(frame)
             
             cv2.imshow('Movenet Multipose', frame)
             
             if cv2.waitKey(10) & 0xFF==ord('q'):
                 break
+
+        cap.release()
+        cv2.destroyAllWindows()
