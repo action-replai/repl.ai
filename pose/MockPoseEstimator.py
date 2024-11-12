@@ -1,4 +1,4 @@
-from PoseEstimator import PoseEstimator
+from pose.PoseEstimator import PoseEstimator
 import tensorflow_hub as hub
 
 class MockPoseEstimator(PoseEstimator):
